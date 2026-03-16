@@ -1,0 +1,123 @@
+{
+  "info": {
+    "_postman_id": "1c162f48-9afa-40a1-9245-3fff5f7e7f85",
+    "name": "Challenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18507236",
+    "_collection_link": "https://go.postman.co/collection/18507236-1c162f48-9afa-40a1-9245-3fff5f7e7f85?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Compare products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080.us-vmprovider.projects.hrcdn.net/api/products/compare?ids=1,5",
+          "protocol": "https",
+          "host": [
+            "vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080",
+            "us-vmprovider",
+            "projects",
+            "hrcdn",
+            "net"
+          ],
+          "path": [
+            "api",
+            "products",
+            "compare"
+          ],
+          "query": [
+            {
+              "key": "ids",
+              "value": "1,5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Compare products details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080.us-vmprovider.projects.hrcdn.net/api/products/compare/fields?ids=1,2&fields=battery,battery_life",
+          "protocol": "https",
+          "host": [
+            "vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080",
+            "us-vmprovider",
+            "projects",
+            "hrcdn",
+            "net"
+          ],
+          "path": [
+            "api",
+            "products",
+            "compare",
+            "fields"
+          ],
+          "query": [
+            {
+              "key": "ids",
+              "value": "1,2"
+            },
+            {
+              "key": "fields",
+              "value": "battery,battery_life"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080.us-vmprovider.projects.hrcdn.net/api/products",
+          "protocol": "https",
+          "host": [
+            "vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080",
+            "us-vmprovider",
+            "projects",
+            "hrcdn",
+            "net"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080.us-vmprovider.projects.hrcdn.net/api/products/1",
+          "protocol": "https",
+          "host": [
+            "vm-5bfcfafe-92d8-4d15-add0-c87439951fb6-8080",
+            "us-vmprovider",
+            "projects",
+            "hrcdn",
+            "net"
+          ],
+          "path": [
+            "api",
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
