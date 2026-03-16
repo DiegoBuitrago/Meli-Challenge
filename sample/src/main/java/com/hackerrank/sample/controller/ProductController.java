@@ -2,6 +2,7 @@ package com.hackerrank.sample.controller;
 
 import java.util.List;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,9 @@ import com.hackerrank.sample.dto.ProductComparisonResponse;
 import com.hackerrank.sample.dto.ProductDetailDTO;
 import com.hackerrank.sample.service.ProductService;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -42,7 +47,9 @@ public class ProductController {
      * @return Objeto ProductDetailDTO con los datos del producto encontrado.
      */
     @GetMapping("/{id}")
-    public ProductDetailDTO getProductById(@PathVariable Long id) {
+    public ProductDetailDTO getProductById(@PathVariable
+            @Positive(message = "El ID debe ser un número positivo")  // no acepta 0 ni negativos
+            Long id) {
         return productService.getProductById(id);
     }
 
@@ -60,7 +67,11 @@ public class ProductController {
      *         comparacion.
      */
     @GetMapping("/compare")
-    public ProductComparisonResponse compareProducts(@RequestParam List<Long> ids) {
+    public ProductComparisonResponse compareProducts(
+            @RequestParam
+            @NotEmpty(message = "Debe proporcionar al menos un ID")
+            @Size(min = 2, message = "Se requieren mínimo 2 IDs para comparar")
+            List<Long> ids) {
         return productService.compareProducts(ids);
     }
 
@@ -79,8 +90,15 @@ public class ProductController {
      *         seleccionados.
      */
     @GetMapping("/compare/fields")
-    public ProductComparisonResponse compareProductsWithFields(@RequestParam List<Long> ids,
-            @RequestParam List<String> fields) {
+    public ProductComparisonResponse compareProductsWithFields(
+            @RequestParam
+            @NotEmpty(message = "Debe proporcionar al menos un ID")
+            @Size(min = 2, message = "Se requieren mínimo 2 IDs para comparar")
+            List<Long> ids,
+            
+            @RequestParam
+            @NotEmpty(message = "Debe especificar al menos un campo")
+            List<String> fields) {
         return productService.compareProductsWithFields(ids, fields);
     }
 }

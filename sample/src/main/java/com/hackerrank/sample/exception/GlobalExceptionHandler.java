@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * Clase encargada de capturar y gestionar las excepciones lanzadas por los
@@ -75,5 +79,52 @@ public class GlobalExceptionHandler {
                                 .build();
 
                 return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        /**
+         * Captura errores de @Validated en @RequestParam y @PathVariable.
+         * Ejemplo: @Size(min=2) en List<Long> ids
+         */
+        @ExceptionHandler(ConstraintViolationException.class)
+        public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
+
+                // Extrae el primer mensaje de violación
+                String message = ex.getConstraintViolations()
+                        .stream()
+                        .map(ConstraintViolation::getMessage)
+                        .findFirst()
+                        .orElse("Parámetros de entrada inválidos");
+
+                ErrorResponse error = ErrorResponse.builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message(message)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+                return ResponseEntity.badRequest().body(error);
+        }
+
+        /**
+         * Captura errores de @Valid sobre un @RequestBody (DTO).
+         * Ejemplo: campos nulos u obligatorios en un objeto JSON
+         */
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+
+                String message = ex.getBindingResult()
+                        .getFieldErrors()
+                        .stream()
+                        .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                        .findFirst()
+                        .orElse("Error de validación");
+
+                ErrorResponse error = ErrorResponse.builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message(message)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+                return ResponseEntity.badRequest().body(error);
         }
 }
